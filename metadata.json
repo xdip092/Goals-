@@ -1,0 +1,6 @@
+{
+  "name": "12-Month Life Transformation OS",
+  "description": "An elite AI-Powered Life Transformation Operating System aligning BCA examination study targets, Full Stack and Generative AI roadmaps, government exam preparation trackers, Spoken English mentoring, and fitness logs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

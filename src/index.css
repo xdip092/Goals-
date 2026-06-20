@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Re-bind core theme colors to fit the Dark High-Density space aesthetic */
+  --color-white: #12131C;
+  --color-slate-50: #07080B;
+  --color-gray-50: #0A0B0F;
+  --color-slate-100: rgba(255, 255, 255, 0.04);
+  --color-slate-200: rgba(255, 255, 255, 0.08);
+  --color-gray-100: rgba(255, 255, 255, 0.03);
+  --color-gray-150: rgba(255, 255, 255, 0.06);
+  --color-gray-200: rgba(255, 255, 255, 0.09);
+  --color-gray-250: rgba(255, 255, 255, 0.12);
+  --color-gray-300: rgba(255, 255, 255, 0.18);
+  --color-gray-400: #8895b3;
+  --color-gray-500: #9cb1d6;
+  --color-gray-550: #b0c2e3;
+  --color-gray-600: #c5d4f0;
+  --color-gray-700: #d6e2f8;
+  --color-gray-800: #eaf0fc;
+  --color-gray-900: #f4f8ff;
+  --color-gray-950: #ffffff;
+
+  --color-slate-900: #10121a;
+  --color-slate-950: #0d0f14;
+
+  --color-indigo-50: rgba(129, 140, 248, 0.1);
+  --color-indigo-100: rgba(129, 140, 248, 0.18);
+  --color-indigo-150: rgba(129, 140, 248, 0.28);
+  --color-indigo-200: rgba(129, 140, 248, 0.4);
+  --color-indigo-600: #818cf8;
+  --color-indigo-700: #a5b4fc;
+  --color-indigo-800: #c7d2fe;
+  --color-indigo-950: #e0e7ff;
+  --color-indigo-955: #e0e7ff;
+
+  --color-emerald-50: rgba(16, 185, 129, 0.08);
+  --color-emerald-100: rgba(16, 185, 129, 0.15);
+  --color-emerald-200: rgba(16, 185, 129, 0.3);
+  --color-emerald-600: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+  --color-emerald-950: #ecfdf5;
+
+  --color-rose-50: rgba(244, 63, 94, 0.08);
+  --color-rose-100: rgba(244, 63, 94, 0.15);
+  --color-rose-150: rgba(244, 63, 94, 0.25);
+  --color-rose-200: rgba(244, 63, 94, 0.35);
+  --color-rose-600: #fb7185;
+  --color-rose-700: #fca5a5;
+  --color-rose-800: #fecaca;
+  --color-rose-950: #fff1f2;
+
+  --color-sky-50: rgba(14, 165, 233, 0.08);
+  --color-sky-100: rgba(14, 165, 233, 0.15);
+  --color-sky-150: rgba(14, 165, 233, 0.25);
+  --color-sky-600: #38bdf8;
+  --color-sky-700: #7dd3fc;
+  --color-sky-800: #bae6fd;
+  --color-sky-950: #f0f9ff;
+
+  --color-orange-50: rgba(249, 115, 22, 0.08);
+  --color-orange-100: rgba(249, 115, 22, 0.15);
+  --color-orange-150: rgba(249, 115, 22, 0.25);
+  --color-orange-600: #fb923c;
+  --color-orange-700: #fdba74;
+  --color-orange-850: #fed7aa;
+  --color-orange-800: #fed7aa;
+  --color-orange-950: #fff7ed;
+
+  --color-amber-50: rgba(245, 158, 11, 0.08);
+  --color-amber-100: rgba(245, 158, 11, 0.15);
+  --color-amber-150: rgba(245, 158, 11, 0.25);
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fde047;
+  --color-amber-800: #fef08a;
+  --color-amber-950: #fefce8;
+
+  --color-purple-50: rgba(168, 85, 247, 0.09);
+  --color-purple-100: rgba(168, 85, 247, 0.18);
+  --color-purple-150: rgba(168, 85, 247, 0.28);
+  --color-purple-600: #c084fc;
+  --color-purple-700: #d8b4fe;
+  --color-purple-800: #e9d5ff;
+  --color-purple-950: #faf5ff;
+}
+
+html, body {
+  background-color: #07080B !important;
+  color: #d6e2f8 !important;
+  font-family: var(--font-sans);
+  height: 100%;
+}
+
+/* Custom Webkit scrollbar for high density layout optimization */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Custom styling presets */
+.shadow-xs {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+input, textarea, select {
+  font-family: var(--font-mono);
+  background-color: rgba(0, 0, 0, 0.25) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* High density outline adjustments */
+nav button, main button, header button {
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide scrollbars but preserve functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* @media print for flawless PDF conversion and single-sheet paper rendering */
+@media print {
+  /* Hide all generic platform containers */
+  body, html {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+  
+  #root, header, nav, footer, .no-print, button, select, input, textarea {
+    display: none !important;
+  }
+
+  /* Show only the targeted print element */
+  #resume-printable-sheet {
+    display: block !important;
+    visibility: visible !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  /* Ensure deep contrast and clear typography spacing on paper */
+  #resume-printable-sheet * {
+    visibility: visible !important;
+    color: #111111 !important;
+    text-shadow: none !important;
+    background: transparent !important;
+  }
+  
+  #resume-printable-sheet h3 {
+    font-size: 20px !important;
+    margin-bottom: 4px !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    text-transform: uppercase !important;
+  }
+
+  #resume-printable-sheet h4 {
+    font-size: 13px !important;
+    color: #333333 !important;
+    border-bottom: 1.5px solid #444444 !important;
+    padding-bottom: 2px !important;
+  }
+
+  #resume-printable-sheet .text-indigo-600,
+  #resume-printable-sheet .text-indigo-700 {
+    color: #1e3a8a !important; /* Rich deep blue for print contrast */
+  }
+
+  #resume-printable-sheet .bg-gray-100 {
+    background-color: #f3f4f6 !important;
+    border: 1px solid #e5e7eb !important;
+  }
+}
+
+/* Light Mode Overrides */
+html.light {
+  --color-white: #ffffff;
+  --color-slate-50: #f8fafc;
+  --color-gray-50: #f9fafb;
+  --color-slate-100: #e2e8f0;
+  --color-slate-200: #cbd5e1;
+  --color-gray-100: #f1f5f9;
+  --color-gray-150: #e2e8f0;
+  --color-gray-200: #cbd5e1;
+  --color-gray-250: #94a3b8;
+  --color-gray-300: #64748b;
+  --color-gray-400: #475569;
+  --color-gray-550: #64748b;
+  --color-gray-500: #475569;
+  --color-gray-650: #334155;
+  --color-gray-600: #334155;
+  --color-gray-700: #1e293b;
+  --color-gray-800: #0f172a;
+  --color-gray-900: #020617;
+  --color-gray-950: #020617;
+
+  --color-slate-900: #f1f5f9;
+  --color-slate-950: #cbd5e1;
+
+  --color-indigo-50: #eef2ff;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-150: #c7d2fe;
+  --color-indigo-200: #a5b4fc;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #4338ca;
+  --color-indigo-800: #3730a3;
+  --color-indigo-950: #1e1b4b;
+}
+
+html.light, html.light body {
+  background-color: #f8fafc !important;
+  color: #1e293b !important;
+}
+
+html.light input, html.light textarea, html.light select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light input::placeholder, html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
