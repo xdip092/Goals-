@@ -331,7 +331,7 @@ export default function App() {
 
       {/* Primary tabs navigations panel */}
       <nav className="bg-white border-b border-gray-150 sticky top-[73px] z-40 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 overflow-x-auto flex gap-1.5 py-2.5 no-scrollbar">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 flex gap-1.5 py-2.5 nav-scrollbar">
           {[
             { id: 'dashboard', label: '📊 System Dashboard', icon: <Cpu className="h-3.5 w-3.5" /> },
             { id: 'goals', label: '🎯 Custom Goals & Notes', icon: <Award className="h-3.5 w-3.5" /> },

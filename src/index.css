@@ -258,3 +258,46 @@ html.light input::placeholder, html.light textarea::placeholder {
   color: #94a3b8 !important;
 }
 
+/* Nav scrollbar custom styling with nice, accessible indications */
+.nav-scrollbar {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.03);
+}
+
+/* For system scrollbars under light mode */
+html.light .nav-scrollbar {
+  scrollbar-color: rgba(79, 70, 229, 0.3) rgba(0, 0, 0, 0.05);
+}
+
+.nav-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  background-color: transparent;
+}
+
+.nav-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 9px;
+}
+
+html.light .nav-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.nav-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+}
+
+.nav-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+html.light .nav-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(79, 70, 229, 0.25);
+}
+
+html.light .nav-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(79, 70, 229, 0.45);
+}
+
