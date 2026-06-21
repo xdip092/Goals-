@@ -33,7 +33,13 @@ function getAiClient(): GoogleGenAI {
 }
 
 // OpenRouter fallback client helper with flipped variables safeguard
+let openRouterDisabledGlobally = false;
+
 function getOpenRouterConfig() {
+  if (openRouterDisabledGlobally) {
+    return { apiKey: "", model: "google/gemini-2.5-flash", isConfigured: false };
+  }
+
   let apiKey = process.env.OPENROUTER_API_KEY || "";
   let model = process.env.OPENROUTER_MODEL || "google/gemini-2.5-flash";
 
@@ -87,6 +93,7 @@ async function callOpenRouter(systemPrompt: string, userMessages: any[], jsonMod
       model: config.model,
       messages,
       temperature: jsonMode ? 0.3 : 0.7,
+      max_tokens: 2000,
       response_format: jsonMode ? { type: "json_object" } : undefined
     })
   });
@@ -134,12 +141,17 @@ Their primary goals:
 
 Ensure your responses are highly custom, actionable, direct, and encouraging. Never sound like a generic chatbot. Cite technical topics (e.g. Linux terminals, React hooks, mathematical quant questions) when relevant. Keep your advice focused on deep, focused work blocks, with no fluff or filler.`;
 
-    // Try routing through OpenRouter if key is present
+    // Try routing through OpenRouter if key is present with a safe native fallback if the OpenRouter call fails (e.g. credit limit reached)
     const openRouter = getOpenRouterConfig();
     if (openRouter.isConfigured) {
-      console.log(`[OpenRouter] Routing chat message using model: ${openRouter.model}`);
-      const text = await callOpenRouter(systemPrompt, messages, false);
-      return res.json({ text });
+      try {
+        console.log(`[OpenRouter] Routing chat message using model: ${openRouter.model}`);
+        const text = await callOpenRouter(systemPrompt, messages, false);
+        return res.json({ text });
+      } catch (orErr) {
+        openRouterDisabledGlobally = true;
+        console.log(`[Router Status] Transitioned chat processing cleanly to native model.`);
+      }
     }
 
     // Default fallback to Gemini
@@ -364,13 +376,18 @@ app.post("/api/english-coach", async (req, res) => {
         "pronunciationTip": "A constructive, tailored phonetic tip on how they would articulate this statement naturally (e.g. blending or intonation)"
       }`;
 
-    // Routing English Coach through OpenRouter if API key exists
+    // Routing English Coach through OpenRouter if API key exists with a safe native fallback if the OpenRouter call fails (e.g. credit limit reached)
     const openRouter = getOpenRouterConfig();
     if (openRouter.isConfigured) {
-      console.log(`[OpenRouter] Routing English Coach via model: ${openRouter.model}`);
-      const responseText = await callOpenRouter(systemInstruction, [{ role: "user", content: promptText }], true);
-      const parsedFeedback = JSON.parse(responseText || "{}");
-      return res.json(parsedFeedback);
+      try {
+        console.log(`[OpenRouter] Routing English Coach via model: ${openRouter.model}`);
+        const responseText = await callOpenRouter(systemInstruction, [{ role: "user", content: promptText }], true);
+        const parsedFeedback = JSON.parse(responseText || "{}");
+        return res.json(parsedFeedback);
+      } catch (orErr) {
+        openRouterDisabledGlobally = true;
+        console.log(`[Router Status] Transitioned English Coach cleanly to native model.`);
+      }
     }
 
     const ai = getAiClient();
@@ -425,13 +442,18 @@ Output a strictly formatted JSON report with no wrapper text:
   "mentorCritique": "A brief, solid, high-impact mentor advice summarizing today's performance"
 }`;
 
-    // Try routing via OpenRouter if key is present
+    // Try routing via OpenRouter if key is present with a safe native fallback if the OpenRouter call fails (e.g. credit limit reached)
     const openRouter = getOpenRouterConfig();
     if (openRouter.isConfigured) {
-      console.log(`[OpenRouter] Routing Accountability Audit via model: ${openRouter.model}`);
-      const responseText = await callOpenRouter(systemPrompt, [{ role: "user", content: promptText }], true);
-      const parsedAudit = JSON.parse(responseText || "{}");
-      return res.json(parsedAudit);
+      try {
+        console.log(`[OpenRouter] Routing Accountability Audit via model: ${openRouter.model}`);
+        const responseText = await callOpenRouter(systemPrompt, [{ role: "user", content: promptText }], true);
+        const parsedAudit = JSON.parse(responseText || "{}");
+        return res.json(parsedAudit);
+      } catch (orErr) {
+        openRouterDisabledGlobally = true;
+        console.log(`[Router Status] Transitioned Accountability Audit cleanly to native model.`);
+      }
     }
 
     const ai = getAiClient();
@@ -494,10 +516,15 @@ Make sure points are detailed, technical, dynamic and informative. Questions sho
 
     const openRouter = getOpenRouterConfig();
     if (openRouter.isConfigured) {
-      console.log(`[OpenRouter] Routing BCA Summarize via model: ${openRouter.model}`);
-      const responseText = await callOpenRouter(systemPrompt, [{ role: "user", content: promptText }], true);
-      const parsed = JSON.parse(responseText || "{}");
-      return res.json(parsed);
+      try {
+        console.log(`[OpenRouter] Routing BCA Summarize via model: ${openRouter.model}`);
+        const responseText = await callOpenRouter(systemPrompt, [{ role: "user", content: promptText }], true);
+        const parsed = JSON.parse(responseText || "{}");
+        return res.json(parsed);
+      } catch (orErr) {
+        openRouterDisabledGlobally = true;
+        console.log(`[Router Status] Transitioned BCA Summarize cleanly to native model.`);
+      }
     }
 
     // Fallback to Gemini API if OpenRouter key is not specified

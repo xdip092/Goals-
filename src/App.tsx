@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getInitialState } from './data';
 import { LifeTransformationState, SubjectTrack, RoadmapItem, GovExamSection } from './types';
 
@@ -22,7 +22,9 @@ import {
   Plus,
   Sun,
   Moon,
-  BookMarked
+  BookMarked,
+  Download,
+  Upload
 } from 'lucide-react';
 
 // Custom components
@@ -227,6 +229,51 @@ export default function App() {
     }
   };
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const exportProgress = () => {
+    try {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      const timestamp = new Date().toISOString().slice(0, 10);
+      downloadAnchor.setAttribute("download", `transformation_os_backup_${timestamp}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    } catch (e) {
+      alert("Error exporting backup: " + (e as Error).message);
+    }
+  };
+
+  const importProgress = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const parsed = JSON.parse(e.target?.result as string);
+        
+        // Basic structural validations to make sure it is a valid state of the OS
+        if (parsed && typeof parsed === 'object' && ('userStats' in parsed || 'bcaSubjects' in parsed || 'fullStackRoadmap' in parsed)) {
+          setState(parsed);
+          localStorage.setItem('transformation_os_state_v1', JSON.stringify(parsed));
+          alert("Backup imported successfully! All your progress, stats, and roadmap data have been restored.");
+        } else {
+          alert("Invalid backup file structure. Please upload a valid JSON backup exported from this application.");
+        }
+      } catch (err) {
+        alert("Failed to parse backup file as valid JSON.");
+      }
+    };
+    reader.readAsText(file);
+    // Reset file input so same file can be loaded again
+    if (event.target) {
+      event.target.value = '';
+    }
+  };
+
   // Calculating overall Completion % of roadmaps dynamically
   const fsTotal = state.fullStackRoadmap.reduce((acc, r) => acc + (r.progress ?? 0), 0);
   const fsPct = Math.round(fsTotal / state.fullStackRoadmap.length);
@@ -311,6 +358,31 @@ export default function App() {
             >
               <RotateCcw className="h-4 w-4" />
             </button>
+
+            <button
+              onClick={exportProgress}
+              className="p-2 border border-indigo-150 bg-indigo-50/10 hover:bg-indigo-50/30 rounded-xl text-indigo-600 hover:text-indigo-700 cursor-pointer flex items-center gap-1.5 transition-all hover:scale-105"
+              title="Export all progress, stats, and roadmap data as a JSON file backup"
+            >
+              <Download className="h-4 w-4" />
+              <span className="text-[10px] uppercase tracking-wider font-extrabold hidden sm:inline">Backup</span>
+            </button>
+
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="p-2 border border-emerald-150 bg-emerald-50/10 hover:bg-emerald-50/30 rounded-xl text-emerald-600 hover:text-emerald-700 cursor-pointer flex items-center gap-1.5 transition-all hover:scale-105"
+              title="Import JSON backup file to restore all progress, stats, and roadmap data"
+            >
+              <Upload className="h-4 w-4" />
+              <span className="text-[10px] uppercase tracking-wider font-extrabold hidden sm:inline">Restore</span>
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={importProgress}
+              accept=".json"
+              className="hidden"
+            />
 
             {/* Theme Toggle Button Switch */}
             <button
